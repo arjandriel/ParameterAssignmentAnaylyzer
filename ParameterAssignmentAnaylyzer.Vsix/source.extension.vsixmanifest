@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" Version="2.0.0">
+  <Metadata>
+    <Identity Id="ParameterAssignmentAnaylyzer" Version="1.0.0" Language="en-US" Publisher="YourName" />
+    <DisplayName>Parameter Assignment Analyzer</DisplayName>
+    <Description xml:space="preserve">Analyzer that flags parameter assignments and offers a code fix to introduce a local variable.</Description>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,)" />
+  </Installation>
+  <Assets>
+    <!-- The analyzer assembly will be included as an extension asset by the packaging project. -->
+    <Asset Type="Microsoft.VisualStudio.Analyzer" Source="File" Path="ParameterAssignmentAnaylyzer.dll" />
+  </Assets>
+</PackageManifest>

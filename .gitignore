@@ -1,0 +1,34 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+.vscode/
+*.dotCover
+*.ncrunch*
+TestResults/
+*.log
+# NuGet
+*.nupkg
+package.lock.json
+packages/
+.nuget/
+
+# Visual Studio profiler
+*.psess
+*.vsp
+
+# Rider
+.idea/
+
+# VS generated files
+*.dbmdl
+*.bak
+
+# Build outputs
+**/bin/
+**/obj/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user

@@ -33,10 +33,14 @@
       <VsixOutDir>$(OutputPath)vsix</VsixOutDir>
       <AnalyzerDll>$(MSBuildProjectDirectory)\..\ParameterAssignmentAnaylyzer\bin\$(Configuration)\netstandard2.1\ParameterAssignmentAnaylyzer.dll</AnalyzerDll>
       <Manifest>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</Manifest>
-      <VsixPath>$(OutputPath)$(AssemblyName).vsix</VsixPath>
+      <!-- Place the final .vsix in the repository root Build folder (two levels up from this project) -->
+      <SolutionBuildDir>$(MSBuildProjectDirectory)\..\..\Build</SolutionBuildDir>
+      <!-- Force a deterministic VSIX filename to avoid duplication like .Vsix.vsix -->
+      <VsixPath>$(SolutionBuildDir)\ParameterAssignmentAnaylyzer.vsix</VsixPath>
     </PropertyGroup>
 
     <MakeDir Directories="$(VsixOutDir)" />
+    <MakeDir Directories="$(SolutionBuildDir)" />
     <Copy SourceFiles="$(AnalyzerDll)" DestinationFolder="$(VsixOutDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="$(Manifest)" DestinationFolder="$(VsixOutDir)" SkipUnchangedFiles="true" />
 

@@ -6,6 +6,14 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <!-- Package and assembly versioning -->
+  <PropertyGroup>
+    <!-- Use a simple version; using three-part semver is also acceptable (e.g., 0.1.0) -->
+    <Version>0.1</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />

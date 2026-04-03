@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="ParameterAssignmentAnaylyzer/ParameterAssignmentAnaylyzer.csproj" />
-  <Project Path="ParameterAssignmentAnaylyzer.Tests/ParameterAssignmentAnaylyzer.Tests.csproj" />
-  <Project Path="ParameterAssignmentAnaylyzer.Vsix/ParameterAssignmentAnaylyzer.Vsix.csproj" />
-</Solution>

@@ -56,8 +56,11 @@ namespace ParameterAssignmentAnaylyzer
 
                 if (symbol is IParameterSymbol parameterSymbol)
                 {
-                    // Report diagnostic on the identifier token
-                    var diag = Diagnostic.Create(Rule, identifier.GetLocation(), parameterSymbol.Name);
+                    // Do not report for ref or out parameters
+                    if (parameterSymbol.RefKind != RefKind.None)
+                        return;
+                // Report diagnostic on the identifier token (usage site)
+                var diag = Diagnostic.Create(Rule, identifier.GetLocation(), parameterSymbol.Name);
                     context.ReportDiagnostic(diag);
                 }
             }
@@ -71,6 +74,9 @@ namespace ParameterAssignmentAnaylyzer
                 var symbol = context.SemanticModel.GetSymbolInfo(identifier).Symbol;
                 if (symbol is IParameterSymbol parameterSymbol)
                 {
+                    // Do not report for ref or out parameters
+                    if (parameterSymbol.RefKind != RefKind.None)
+                        return;
                     var diag = Diagnostic.Create(Rule, identifier.GetLocation(), parameterSymbol.Name);
                     context.ReportDiagnostic(diag);
                 }
@@ -85,6 +91,9 @@ namespace ParameterAssignmentAnaylyzer
                 var symbol = context.SemanticModel.GetSymbolInfo(identifier).Symbol;
                 if (symbol is IParameterSymbol parameterSymbol)
                 {
+                    // Do not report for ref or out parameters
+                    if (parameterSymbol.RefKind != RefKind.None)
+                        return;
                     var diag = Diagnostic.Create(Rule, identifier.GetLocation(), parameterSymbol.Name);
                     context.ReportDiagnostic(diag);
                 }

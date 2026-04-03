@@ -1,23 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <!-- Target the same runtime as the VSIX tooling. net9.0 is supported by the SDK-style project, but the VS tooling
+         may require a Windows-compatible TFM. Keep net9.0 as the analyzer assembly is netstandard2.1. -->
     <TargetFramework>net9.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>false</IsPackable>
     <ApplicationManifest>source.extension.vsixmanifest</ApplicationManifest>
+    <!-- Ensure VSIX is created by MSBuild target CreateVsixPackage provided by the VSSDK.Sdk -->
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Build tools used by the VS SDK targets -->
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2120" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Include the analyzer assembly into the VSIX package root -->
-    <Content Include="..\ParameterAssignmentAnaylyzer\bin\$(Configuration)\netstandard2.1\ParameterAssignmentAnaylyzer.dll">
+    <None Include="..\ParameterAssignmentAnaylyzer\bin\$(Configuration)\netstandard2.1\ParameterAssignmentAnaylyzer.dll">
       <Pack>true</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="source.extension.vsixmanifest" Pack="true" PackagePath="" />
+    </None>
+    <None Include="source.extension.vsixmanifest">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
+
+  <!-- CreateVsixPackage: package the analyzer DLL and manifest into a .vsix (zip) file. -->
+  <Target Name="CreateVsixPackage" AfterTargets="Build">
+    <PropertyGroup>
+      <VsixOutDir>$(OutputPath)vsix</VsixOutDir>
+      <AnalyzerDll>$(MSBuildProjectDirectory)\..\ParameterAssignmentAnaylyzer\bin\$(Configuration)\netstandard2.1\ParameterAssignmentAnaylyzer.dll</AnalyzerDll>
+      <Manifest>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</Manifest>
+      <VsixPath>$(OutputPath)$(AssemblyName).vsix</VsixPath>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(VsixOutDir)" />
+    <Copy SourceFiles="$(AnalyzerDll)" DestinationFolder="$(VsixOutDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(Manifest)" DestinationFolder="$(VsixOutDir)" SkipUnchangedFiles="true" />
+
+    <!-- Use PowerShell's Compress-Archive to build the .vsix -->
+    <Exec Command="powershell -NoProfile -Command &quot;Compress-Archive -Path '$(VsixOutDir)\\*' -DestinationPath '$(VsixPath)' -Force&quot;" />
+    <Message Text="Created VSIX: $(VsixPath)" Importance="High" />
+  </Target>
 
 </Project>
